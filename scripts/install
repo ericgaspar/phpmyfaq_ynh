@@ -26,7 +26,26 @@ ynh_setup_source --dest_dir="$install_dir"
 #=================================================
 ynh_script_progression "Adding $app's configuration files..."
 
-ynh_config_add --template="some_config_file" --destination="$install_dir/some_config_file"
+ynh_config_add --template="database.php" --destination="$install_dir/content/core/config/database.php"
+
+#=================================================
+# INSTALL PHPMYFAQ WITH COMPOSER
+#=================================================
+ynh_script_progression "Installing $app with Composer..."
+
+ynh_composer_exec install --no-dev
+
+#=================================================
+# INSTALL PHPMYFAQ
+#=================================================
+ynh_script_progression "Installing $app..."
+
+pushd $install_dir
+	php$php_version composer.phar install
+	ynh_hide_warnings corepack enable && corepack prepare pnpm@latest --activate
+    ynh_hide_warnings ynh_exec_as_app pnpm install
+    ynh_hide_warnings ynh_exec_as_app pnpm build
+popd
 
 #=================================================
 # SYSTEM CONFIGURATION

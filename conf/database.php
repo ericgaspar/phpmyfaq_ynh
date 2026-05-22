@@ -1,5 +1,5 @@
 <?php
-$DB['server'] = '';
+$DB['server'] = 'localhost';
 $DB['port'] = '';
 $DB['user'] = '__DB_USER__';
 $DB['password'] = '__DB_PWD__';
